@@ -15,9 +15,9 @@ build:
       context: auth
       docker:
         dockerfile: Dockerfile
-        # noCache: false
-        # pullParent: false
-        # squash: false
+        noCache: false
+        pullParent: false
+        squash: false
       sync:
         manual:
           - dest: .
