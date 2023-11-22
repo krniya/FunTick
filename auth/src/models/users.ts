@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Password } from "../utilities/password";
+import { Password } from '../utilities/password';
 
 const gender = ['M', 'F']  //* gender enum for gender field (male or female)
 
@@ -31,7 +31,7 @@ interface UserDoc extends mongoose.Document {
 
 
 //* User Schema
-//* {name, email, password, dob, gender}
+//* {name, email, password, dob, gender, toJSON()}
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -55,6 +55,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: gender
+    },
+}, {
+    toJSON: {
+        transform(doc, ret) {
+            ret.id = ret._id
+            delete ret._id
+            delete ret.password
+            delete ret.__v
+        }
     }
 })
 

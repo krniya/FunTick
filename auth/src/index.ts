@@ -2,6 +2,7 @@ import express from 'express'
 import 'express-async-errors'
 import { json } from 'body-parser'
 import mongoose from 'mongoose'
+import cookieSession from 'cookie-session'
 
 import { currentUserRouter } from './routes/current-user'
 import { signinRouter } from './routes/signin'
@@ -12,7 +13,15 @@ import { NotFoundError } from './errors/not-found-error'
 
 
 const app = express()
+app.set('trust proxy', true)    //* Express to trust proxied requests
+
 app.use(json())
+app.use(
+    cookieSession({         //* Cookie seesion to get JWT from cookie
+        signed: false,      //* As we got JWT, don't required to encrypt cookie
+        secure: true,       //* Only accept request at HTTPS 
+    })
+)
 
 app.use(currentUserRouter)  //* Route to get current logged in user
 app.use(signinRouter)       //* Route to sign in
@@ -36,9 +45,19 @@ const startDBConnection = async () => {
     }
 }
 
+//* Environmnet variable defination check function
+const envVariableCheck = () => {
+    if(!process.env.JWT_KEY) {
+        throw new Error('JWT_KEY must be defined')
+    }
+}
+
 app.listen(3000, () => {
     console.log('Auth service listening on port 3000!')
 })
 
 //* Connecting to mongoDB 
 startDBConnection()
+
+//* Checking environment variable declearation
+envVariableCheck()

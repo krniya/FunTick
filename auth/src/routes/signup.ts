@@ -1,8 +1,9 @@
 import express, {Request, Response} from 'express'
-import { body, validationResult } from 'express-validator'
-import { RequestValidationError } from '../errors/request-validation-error'
+import { body } from 'express-validator'
 import { User } from '../models/users'
 import { BadRequestError } from '../errors/bad-request-error'
+import jwt from 'jsonwebtoken'
+import { validateRequest } from '../middlewares/validate-request'
 
 const router = express.Router()
 
@@ -16,23 +17,27 @@ router.post('/api/users/signup', [
     body('password').trim().isLength({min:8, max: 20}).withMessage('Password must be between 8 and 20 characters'),
     body('dob').notEmpty().withMessage('Please provide date in proper format'),
     body('gender').notEmpty().withMessage('Please provide proper gender (M/F/O)')
-], async (req: Request, res: Response) => {
-    //* validating sent paramerter for sign up
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        throw new RequestValidationError(errors.array())
-    }
-
+], validateRequest, async (req: Request, res: Response) => {
     const {name, email, password, dob, gender} = req.body
     //* Checking if email is already been used
     const existingUser = await User.findOne({ email })
     if(existingUser) {
-        console.log('Email in user')
         throw new BadRequestError('Email already in use')
     }
     //* User Sign Up
     const user = User.build({name, email, password, dob, gender})
     await user.save();
+
+    //* Generate JWT
+    const userJwt = jwt.sign({
+        id: user.id,
+        email: user.email
+    }, process.env.JWT_KEY!)
+
+    //* Storing the JWT on session
+    req.session = {
+        jwt: userJwt
+    }
 
     res.status(201).send(user);
 

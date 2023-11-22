@@ -15,9 +15,15 @@ spec:
       containers:
       - name: auth
         image: krniya/auth
+        env:
+          - name: JWT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: jwt-secret
+                key: JWT_KEY
         resources:
           limits:
-            memory: "256Mi"
+            memory: "1024Mi"
             cpu: "500m"
         ports:
         - containerPort: 3000
