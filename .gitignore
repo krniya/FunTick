@@ -135,4 +135,4 @@ dist
 # client
 client-new
 # infra/k8s/client-depl.yaml
-infra/k8s/client-new-depl.yaml
+infra/k8s/client-new-depl.yaml.old
