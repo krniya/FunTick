@@ -11,7 +11,7 @@ build:
   local:
     push: false
   artifacts:
-    - image: krniya/auth
+    - image: krniya/fun-auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -22,4 +22,26 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
+    - image: krniya/fun-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        pullParent: false
+        squash: false
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.js'
+    # - image: krniya/fun-client-new
+    #   context: client-new
+    #   docker:
+    #     dockerfile: Dockerfile
+    #     noCache: false
+    #     pullParent: false
+    #     squash: false
+    #   sync:
+    #     manual:
+    #       - dest: .
+    #         src: 'src/**/*.tsx'
 

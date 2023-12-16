@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: auth
-        image: krniya/auth
+        image: krniya/fun-auth
         env:
           - name: JWT_KEY
             valueFrom:
