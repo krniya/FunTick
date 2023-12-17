@@ -5,7 +5,7 @@ import { app } from "./app";
 const startDBConnection = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI!); //* Path to mongodb services [kubernetes]
-        console.log("Connected to Auth MongoDB");
+        console.log("Connected to Tickets MongoDB");
     } catch (err) {
         console.log(err);
     }
@@ -28,5 +28,5 @@ envVariableCheck();
 startDBConnection();
 
 app.listen(3000, () => {
-    console.log("Auth service listening on port 3000!");
+    console.log("Tickets service listening on port 3000!");
 });
