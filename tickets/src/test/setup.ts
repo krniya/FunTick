@@ -4,17 +4,17 @@ import request from "supertest";
 import { app } from "../app";
 import jwt from "jsonwebtoken";
 
+//* Global signup function type declearation
 declare global {
-    namespace NodeJS {
-        interface Global {
-            signin(): string[];
-        }
-    }
+    function signin(): string[];
 }
+
+jest.mock("../nats-wrapper");
 
 let mongo: any;
 beforeAll(async () => {
     process.env.JWT_KEY = "key";
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
     mongo = await MongoMemoryServer.create();
     const mongoUri = mongo.getUri();

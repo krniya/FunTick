@@ -8,6 +8,8 @@ import {
     BadRequestError,
 } from "@kneeyaa/mshelper";
 import { Ticket } from "../models/ticket";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -38,7 +40,7 @@ router.put(
             throw new BadRequestError("Cannot edit a reserved ticket");
         }
 
-        // * Tring to edit others tickets
+        // * Trying to edit others tickets
         if (ticket.userId !== req.currentUser!.id) {
             throw new NotAuthorizedError();
         }
@@ -49,6 +51,15 @@ router.put(
             price: req.body.price,
         });
         await ticket.save();
+
+        // * Ticket Update event published
+        new TicketUpdatedPublisher(natsWrapper.client).publish({
+            id: ticket.id,
+            title: ticket.title,
+            price: ticket.price,
+            userId: ticket.userId,
+            version: ticket.version,
+        });
 
         res.send(ticket);
     }

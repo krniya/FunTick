@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@kneeyaa/mshelper": "^1.0.5",
+    "@kneeyaa/mshelper": "^1.1.0",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/mongoose": "^5.11.97",
