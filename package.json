@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@types/stripe": "^8.0.417"
+  }
+}

@@ -1,27 +1,24 @@
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "@kneeyaa/mshelper";
-import { TicketDoc } from "./ticket";
-
-export { OrderStatus };
 
 //* An interface that describes the properties
 //* that are required to create a new Order
 interface OrderAttrs {
+    id: string;
+    version: number;
     userId: string;
+    price: number;
     status: OrderStatus;
-    expiresAt: Date;
-    ticket: TicketDoc;
 }
 
 //* An interface that describes the properties
 //* that a order document model has
 interface OrderDoc extends mongoose.Document {
-    userId: string;
-    status: OrderStatus;
-    expiresAt: Date;
-    ticket: TicketDoc;
     version: number;
+    userId: string;
+    price: number;
+    status: OrderStatus;
 }
 
 //* An interface that describes the properties
@@ -31,25 +28,20 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 }
 
 //* Order Schema
-//* {userId, status, expiresAt, ticket, toJSON()}
+//* {userId, status, ticket, toJSON()}
 const orderSchema = new mongoose.Schema(
     {
         userId: {
             type: String,
             required: true,
         },
+        price: {
+            type: Number,
+            required: true,
+        },
         status: {
             type: String,
             required: true,
-            enum: Object.values(OrderStatus),
-            default: OrderStatus.Created,
-        },
-        expiresAt: {
-            type: mongoose.Schema.Types.Date,
-        },
-        ticket: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Ticket",
         },
     },
     {
@@ -69,7 +61,13 @@ orderSchema.plugin(updateIfCurrentPlugin);
 //* Function to create new order.
 //* using it instead of 'new Order' to add type check
 orderSchema.statics.build = (attrs: OrderAttrs) => {
-    return new Order(attrs);
+    return new Order({
+        _id: attrs.id,
+        version: attrs.version,
+        price: attrs.price,
+        userId: attrs.userId,
+        status: attrs.status,
+    });
 };
 
 const Order = mongoose.model<OrderDoc, OrderModel>("Order", orderSchema);
