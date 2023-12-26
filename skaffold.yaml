@@ -22,8 +22,8 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: krniya/fun-tickets
-      context: tickets
+    - image: krniya/fun-events
+      context: events
       docker:
         dockerfile: Dockerfile
         noCache: false

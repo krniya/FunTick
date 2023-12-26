@@ -27,10 +27,10 @@ spec:
             port: 
               number: 3000
       - pathType: ImplementationSpecific
-        path: "/api/tickets/?(.*)"
+        path: "/api/events/?(.*)"
         backend:
           service:
-            name: tickets-srv
+            name: events-srv
             port: 
               number: 3000
       - pathType: ImplementationSpecific

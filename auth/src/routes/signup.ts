@@ -18,26 +18,29 @@ router.post(
             .trim()
             .isLength({ min: 8, max: 20 })
             .withMessage("Password must be between 8 and 20 characters"),
-        body("dob").notEmpty().withMessage("Please provide date in proper format"),
-        body("gender").notEmpty().withMessage("Please provide proper gender (M/F/O)"),
     ],
     validateRequest,
     async (req: Request, res: Response) => {
-        const { name, email, password, dob, gender } = req.body;
+        const { name, email, password } = req.body;
         //* Checking if email is already been used
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             throw new BadRequestError("Email already in use");
         }
+
+        // * Converting full name to first name & last name.
+        var firstName = name.split(" ").slice(0, -1).join(" ");
+        var lastName = name.split(" ").slice(-1).join(" ");
+
         //* User Sign Up
-        const user = User.build({ name, email, password, dob, gender });
+        const user = User.build({ firstName, lastName, email, password });
         await user.save();
 
         //* Generate JWT
         const userJwt = jwt.sign(
             {
                 id: user.id,
-                name: user.name,
+                name: user.firstName + " " + user.lastName,
                 email: user.email,
             },
             process.env.JWT_KEY!
