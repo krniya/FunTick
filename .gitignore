@@ -133,7 +133,7 @@ dist
 .vscode
 # Temperory removing client from git files
 # client
-client-new
+client-old
 # infra/k8s/client-depl.yaml
 infra/k8s/client-new-depl.yaml.old
 nats-test
