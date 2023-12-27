@@ -18,16 +18,24 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
         }
 
         //* Mark the event as being reserved by setting its orderId property
-        event.set({ orderId: data.id });
+        event.set({ order: data.id });
 
         //* Save the event
         await event.save();
         await new EventUpdatedPublisher(this.client).publish({
             id: event.id,
-            price: event.price,
             title: event.title,
-            userId: event.userId,
-            version: event.version,
+            location: event.location,
+            createdAt: event.createdAt,
+            imageUrl: event.imageUrl,
+            startDateTime: event.startDateTime,
+            endDateTime: event.endDateTime,
+            price: event.price,
+            isFree: event.isFree,
+            url: event.url,
+            order: event.order,
+            category: event.category,
+            organizer: event.organizer,
         });
 
         //* ack the message

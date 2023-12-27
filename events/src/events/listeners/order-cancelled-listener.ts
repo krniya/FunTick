@@ -19,17 +19,23 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
         }
 
         //* Event updated
-        event.set({ orderId: undefined });
+        event.set({ order: undefined });
         await event.save();
 
         //* Event Updation event published
         await new EventUpdatedPublisher(this.client).publish({
             id: event.id,
-            orderId: event.orderId,
-            userId: event.userId,
-            price: event.price,
             title: event.title,
-            version: event.version,
+            location: event.location,
+            createdAt: event.createdAt,
+            imageUrl: event.imageUrl,
+            startDateTime: event.startDateTime,
+            endDateTime: event.endDateTime,
+            price: event.price,
+            isFree: event.isFree,
+            url: event.url,
+            category: event.category,
+            organizer: event.organizer,
         });
 
         msg.ack();

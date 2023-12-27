@@ -5,26 +5,35 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 //* that are required to create a new Event
 interface EventAttrs {
     title: string;
-    price: number;
-    userId: string;
+    description: string;
+    location: string;
+    createdAt: Date;
+    imageUrl: string;
+    startDateTime: Date;
+    endDateTime: Date;
+    price: string;
+    isFree: boolean;
+    url: string;
+    category: string;
+    organizer: string;
 }
 
 //* An interface that describes the properties
 //* that a Event document model has
 interface EventDoc extends mongoose.Document {
-    title: String;
-    description: String;
-    location: String;
+    title: string;
+    description: string;
+    location: string;
     createdAt: Date;
-    imageUrl: String;
+    imageUrl: string;
     startDateTime: Date;
     endDateTime: Date;
-    price: String;
-    isFree: Boolean;
-    url: String;
-    category: mongoose.Schema.Types.ObjectId;
-    organizer: mongoose.Schema.Types.ObjectId;
-    userId: string;
+    price: string;
+    isFree: boolean;
+    url: string;
+    order: string;
+    category: string;
+    organizer: string;
     version: number;
 }
 
@@ -48,9 +57,9 @@ const eventSchema = new mongoose.Schema(
         price: { type: String },
         isFree: { type: Boolean, default: false },
         url: { type: String, require: true },
-        userId: { type: String, required: true },
         category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
         organizer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        order: { type: String },
     },
     {
         toJSON: {

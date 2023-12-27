@@ -22,6 +22,7 @@
     "@types/react-datepicker": "^4.19.4",
     "@types/uuid": "^9.0.7",
     "@uploadthing/react": "^6.0.2",
+    "axios": "^1.6.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.302.0",

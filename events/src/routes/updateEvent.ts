@@ -19,12 +19,17 @@ const router = express.Router();
 router.put(
     "/api/events/:id",
     requireAuth,
-    [
-        body("title").not().isEmpty().withMessage("Title is required"),
-        body("price")
-            .isFloat({ gt: 0 })
-            .withMessage("Price must be provided and must be greater than 0"),
-    ],
+    [body("title").not().isEmpty().withMessage("Title is required")],
+    [body("description").not().isEmpty().withMessage("Description is required")],
+    [body("location").not().isEmpty().withMessage("Location is required")],
+    [body("createdAt").not().isEmpty().withMessage("CreatedAt is required")],
+    [body("imageUrl").not().isEmpty().withMessage("ImageURL is required")],
+    [body("startDateTime").not().isEmpty().withMessage("startDateTime is required")],
+    [body("endDateTime").not().isEmpty().withMessage("EndDateTime is required")],
+    [body("price").not().isEmpty().withMessage("Price is required")],
+    [body("isFree").not().isEmpty().withMessage("isFree is required")],
+    [body("url").not().isEmpty().withMessage("Url is required")],
+    [body("category").not().isEmpty().withMessage("Category is required")],
     validateRequest,
     async (req: Request, res: Response) => {
         // * Fetching event
@@ -36,12 +41,11 @@ router.put(
         }
 
         // * Event already reserved
-        if (event.orderId) {
+        if (event.order) {
             throw new BadRequestError("Cannot edit a reserved event");
         }
-
         // * Trying to edit others events
-        if (event.userId !== req.currentUser!.id) {
+        if (event.organizer.toString() !== req.currentUser!.id) {
             throw new NotAuthorizedError();
         }
 
@@ -56,9 +60,16 @@ router.put(
         new EventUpdatedPublisher(natsWrapper.client).publish({
             id: event.id,
             title: event.title,
+            location: event.location,
+            createdAt: event.createdAt,
+            imageUrl: event.imageUrl,
+            startDateTime: event.startDateTime,
+            endDateTime: event.endDateTime,
             price: event.price,
-            userId: event.userId,
-            version: event.version,
+            isFree: event.isFree,
+            url: event.url,
+            category: event.category,
+            organizer: event.organizer,
         });
 
         res.send(event);

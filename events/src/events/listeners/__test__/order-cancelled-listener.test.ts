@@ -8,17 +8,26 @@ import { Event } from "../../../models/event";
 const setup = async () => {
     const listener = new OrderCancelledListener(natsWrapper.client);
 
-    const orderId = new mongoose.Types.ObjectId().toHexString();
+    const order = new mongoose.Types.ObjectId().toHexString();
     const event = Event.build({
-        title: "concert",
-        price: 20,
-        userId: "asdf",
+        title: "Test Event",
+        description: "This is a test event",
+        location: "Test Location",
+        createdAt: new Date("2023-01-01T00:00:00Z"),
+        imageUrl: "https://example.com/image.jpg",
+        startDateTime: new Date("2023-01-01T12:00:00Z"),
+        endDateTime: new Date("2023-01-01T15:00:00Z"),
+        price: "10",
+        isFree: false,
+        url: "https://example.com/event",
+        category: "5f5b689c8f3dbc1de053d5d5",
+        organizer: "5f5b689c8f3dbc1de053d5d5",
     });
-    event.set({ orderId });
+    event.set({ order });
     await event.save();
 
     const data: OrderCancelledEvent["data"] = {
-        id: orderId,
+        id: order,
         version: 0,
         event: {
             id: event.id,
@@ -30,16 +39,16 @@ const setup = async () => {
         ack: jest.fn(),
     };
 
-    return { msg, data, event, orderId, listener };
+    return { msg, data, event, order, listener };
 };
 
 it("updates the event, publishes an event, and acks the message", async () => {
-    const { msg, data, event, orderId, listener } = await setup();
+    const { msg, data, event, order, listener } = await setup();
 
     await listener.onMessage(data, msg);
 
     const updatedEvent = await Event.findById(event.id);
-    expect(updatedEvent!.userId).not.toBeDefined();
+    expect(updatedEvent!.order).not.toBeDefined();
     expect(msg.ack).toHaveBeenCalled();
     expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
