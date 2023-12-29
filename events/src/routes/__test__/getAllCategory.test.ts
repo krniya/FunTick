@@ -13,6 +13,6 @@ it("can fetch a list of Categorys", async () => {
     await createCategory("Party");
     await createCategory("MLM");
 
-    const response = await request(app).get("/api/events/category").expect(200);
+    const response = await request(app).get("/api/events/category").send().expect(200);
     expect(response.body.length).toEqual(3);
 });

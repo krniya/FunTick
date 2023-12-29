@@ -24,6 +24,9 @@ spec:
           - name: MONGO_URI
             value: 'mongodb://auth-mongo-srv:27017/auth'
         resources:
+          requests:
+            memory: "756Mi"
+            cpu: "450m"
           limits:
             memory: "1024Mi"
             cpu: "500m"

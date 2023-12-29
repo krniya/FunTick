@@ -18,7 +18,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
         }
 
         //* Mark the event as being reserved by setting its orderId property
-        event.set({ order: data.id });
+        event.set({ order: { _id: data.id } });
 
         //* Save the event
         await event.save();
@@ -36,6 +36,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
             order: event.order,
             category: event.category,
             organizer: event.organizer,
+            version: event.version,
         });
 
         //* ack the message

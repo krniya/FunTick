@@ -1,3 +1,4 @@
+"use client";
 import {
     Select,
     SelectContent,
@@ -18,8 +19,8 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Input } from "../ui/input";
+import { createCategory, getAllCategories } from "@/lib/actions/category.actions";
 import axios from "axios";
-import { body } from "express-validator";
 
 type DropdownProps = {
     value?: string;
@@ -27,7 +28,7 @@ type DropdownProps = {
 };
 
 interface Category extends Document {
-    id: string;
+    _id: string;
     name: string;
 }
 
@@ -35,13 +36,21 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [newCategory, setNewCategory] = useState("");
 
-    const handleAddCategory = () => {};
+    const handleAddCategory = () => {
+        const createCategory = async () => {
+            const response = await axios.post("/api/events/category", {
+                name: newCategory,
+            });
+        };
+    };
 
     useEffect(() => {
         const getCategories = async () => {
-            const categoryList = await axios.get("/api/events/category").body;
+            const response = await axios.get("/api/events/category");
+            const categoryList = response.data;
             categoryList && setCategories(categoryList as Category[]);
         };
+
         getCategories();
     }, []);
 
@@ -54,8 +63,8 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
                 {categories.length > 0 &&
                     categories.map((category) => (
                         <SelectItem
-                            key={category.id}
-                            value={category.id}
+                            key={category._id}
+                            value={category._id}
                             className='select-item p-regular-14'>
                             {category.name}
                         </SelectItem>

@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/api/events", async (req: Request, res: Response) => {
     // * Fetching event which are not ordered
     const events = await Event.find({
-        orderId: undefined,
+        order: undefined,
     });
 
     res.send(events);

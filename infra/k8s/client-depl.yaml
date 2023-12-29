@@ -15,9 +15,12 @@ spec:
       - name: client
         image: krniya/fun-client
         resources:
+          requests:
+            memory: "1756Mi"
+            cpu: "950m"
           limits:
             memory: "2048Mi"
-            cpu: "500m"
+            cpu: "1000m"
 
 
 ---

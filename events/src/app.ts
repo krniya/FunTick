@@ -9,6 +9,8 @@ import { updateEventRouter } from "./routes/updateEvent";
 import { currentUser, NotFoundError, errorHandler } from "@kneeyaa/mshelper";
 import { createCategoryRouter } from "./routes/createCategory";
 import { getCategoriesRouter } from "./routes/getAllCategory";
+import { deleteEventRouter } from "./routes/deleteEvent";
+import { getEventByUserIdRouter } from "./routes/getEventsByUser";
 
 const app = express();
 app.set("trust proxy", true); //* Express to trust proxied requests
@@ -22,12 +24,14 @@ app.use(
 );
 app.use(currentUser);
 
+app.use(createCategoryRouter); // * Route to create category
+app.use(getCategoriesRouter); // * Route to get all categories
 app.use(createEventRouter); //* Route to create new Events
 app.use(showEventRouter); //* Route to get Event based on id
 app.use(indexEventRouter); //* Route to get all Events
 app.use(updateEventRouter); //* Route to update the Event details
-app.use(createCategoryRouter); // * Route to create category
-app.use(getCategoriesRouter); // * Route to get all categories
+app.use(getEventByUserIdRouter); // * Route to get Events by user id
+app.use(deleteEventRouter); // * Route to delete event
 
 //* Error handling for incorrect route
 //* Throwing Error 404 Not Found

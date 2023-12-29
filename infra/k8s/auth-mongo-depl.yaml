@@ -16,6 +16,9 @@ spec:
       - name: auth-mongo
         image: mongo
         resources:
+          requests:
+            memory: "756Mi"
+            cpu: "450m"
           limits:
             memory: "1024Mi"
             cpu: "500m"

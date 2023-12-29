@@ -43,7 +43,8 @@ global.signin = () => {
     // * Build a JWT payload.  { id, email }
     const payload = {
         id: "5f5b689c8f3dbc1de053d5d5",
-        email: "test@test.com",
+        firstName: "Test",
+        lastName: "User",
     };
 
     // * Create the JWT!
@@ -67,7 +68,8 @@ global.randomSignin = () => {
     // * Build a JWT payload.  { id, email }
     const payload = {
         id: new mongoose.Types.ObjectId().toHexString(),
-        email: "test@test.com",
+        firstName: "Test",
+        lastName: "User",
     };
 
     // * Create the JWT!

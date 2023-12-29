@@ -8,7 +8,7 @@ import { Event } from "../../../models/event";
 const setup = async () => {
     const listener = new OrderCancelledListener(natsWrapper.client);
 
-    const order = new mongoose.Types.ObjectId().toHexString();
+    const order = { _id: new mongoose.Types.ObjectId().toHexString() };
     const event = Event.build({
         title: "Test Event",
         description: "This is a test event",
@@ -20,14 +20,14 @@ const setup = async () => {
         price: "10",
         isFree: false,
         url: "https://example.com/event",
-        category: "5f5b689c8f3dbc1de053d5d5",
-        organizer: "5f5b689c8f3dbc1de053d5d5",
+        category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
+        organizer: { _id: "5f5b689c8f3dbc1de053d5d5", firstName: "Test", lastName: "User" },
     });
     event.set({ order });
     await event.save();
 
     const data: OrderCancelledEvent["data"] = {
-        id: order,
+        id: order._id,
         version: 0,
         event: {
             id: event.id,

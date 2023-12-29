@@ -21,8 +21,8 @@ const setup = async () => {
         price: "10",
         isFree: false,
         url: "https://example.com/event",
-        category: "5f5b689c8f3dbc1de053d5d5",
-        organizer: "5f5b689c8f3dbc1de053d5d6",
+        category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
+        organizer: { _id: "5f5b689c8f3dbc1de053d5d5", firstName: "Test", lastName: "User" },
     });
     await event.save();
 
@@ -53,8 +53,7 @@ it("sets the order id of the event", async () => {
     await listener.onMessage(data, msg);
 
     const updatedEvent = await Event.findById(event.id);
-
-    expect(updatedEvent!.order).toEqual(data.id);
+    expect(updatedEvent!.order!._id.toString()).toEqual(data.id);
 });
 
 it("acks the message", async () => {
@@ -72,8 +71,5 @@ it("publishes a event updated event", async () => {
     expect(natsWrapper.client.publish).toHaveBeenCalled();
 
     const eventUpdatedData = JSON.parse((natsWrapper.client.publish as jest.Mock).mock.calls[0][1]);
-    console.log({
-        eventdata: eventUpdatedData,
-    });
     expect(data.id).toEqual(eventUpdatedData.order);
 });

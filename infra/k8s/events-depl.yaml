@@ -32,6 +32,9 @@ spec:
           - name: NATS_URL
             value: 'http://nats-srv:4222'
         resources:
+          requests:
+            memory: "756Mi"
+            cpu: "450m"
           limits:
             memory: "1024Mi"
             cpu: "500m"

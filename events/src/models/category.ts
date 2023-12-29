@@ -9,7 +9,6 @@ interface CategoryAttrs {
 //* An interface that describes the properties
 //* that a Category document model has
 interface CategoryDoc extends mongoose.Document {
-    id: string;
     name: string;
 }
 
@@ -38,7 +37,10 @@ const categorySchema = new mongoose.Schema(
 //* Function to create new Category.
 //* using it instead of 'new Category' to add type check
 categorySchema.statics.build = (attrs: CategoryAttrs) => {
-    return new Category(attrs);
+    return new Category({
+        _id: new mongoose.Types.ObjectId(), // Ensure that _id is set correctly
+        ...attrs,
+    });
 };
 
 const Category = mongoose.model<CategoryDoc, CategoryModel>("Category", categorySchema);

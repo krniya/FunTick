@@ -16,8 +16,11 @@ spec:
         - name: payments-mongo
           image: mongo
           resources:
+            requests:
+              memory: "1256Mi"
+              cpu: "450m"
             limits:
-              memory: "1024Mi"
+              memory: "1524Mi"
               cpu: "500m"
 ---
 apiVersion: v1

@@ -13,8 +13,8 @@ it("implements optimistic concurrency control", async () => {
         price: "10",
         isFree: false,
         url: "https://example.com/event",
-        category: "5f5b689c8f3dbc1de053d5d5",
-        organizer: "5f5b689c8f3dbc1de053d5d5",
+        category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
+        organizer: { _id: "5f5b689c8f3dbc1de053d5d5", firstName: "Test", lastName: "User" },
     });
 
     // * Save the Event to the database
@@ -25,8 +25,8 @@ it("implements optimistic concurrency control", async () => {
     const secondInstance = await Event.findById(event.id);
 
     // * make two separate changes to the Events we fetched
-    firstInstance!.set({ price: 10 });
-    secondInstance!.set({ price: 15 });
+    firstInstance!.set({ price: "15" });
+    secondInstance!.set({ price: "20" });
 
     // * save the first fetched Event
     await firstInstance!.save();
@@ -53,8 +53,8 @@ it("increments the version number on multiple saves", async () => {
         price: "10",
         isFree: false,
         url: "https://example.com/event",
-        category: "5f5b689c8f3dbc1de053d5d5",
-        organizer: "5f5b689c8f3dbc1de053d5d5",
+        category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
+        organizer: { _id: "5f5b689c8f3dbc1de053d5d5", firstName: "Test", lastName: "User" },
     });
 
     await event.save();

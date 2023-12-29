@@ -37,6 +37,9 @@ spec:
                   name: stripe-secret
                   key: STRIPE_KEY
           resources:
+            requests:
+              memory: "756Mi"
+              cpu: "450m"
             limits:
               memory: "1024Mi"
               cpu: "500m"

@@ -36,6 +36,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
             url: event.url,
             category: event.category,
             organizer: event.organizer,
+            version: event.version,
         });
 
         msg.ack();

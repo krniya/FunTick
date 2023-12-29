@@ -27,6 +27,9 @@ spec:
             - name: REDIS_HOST
               value: expiration-redis-srv
           resources:
+            requests:
+              memory: "756Mi"
+              cpu: "450m"
             limits:
               memory: "1024Mi"
               cpu: "500m"
