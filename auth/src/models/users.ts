@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { Password } from "../utilities/password";
 
-const gender = ["M", "F", "O"]; //* gender enum for gender field (male or female)
-
 //* An interface that describes the properties
 //* that are required to create a new user
 interface UserAttribute {

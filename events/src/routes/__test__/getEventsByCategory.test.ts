@@ -15,19 +15,11 @@ const createEvent = async (title: string, cookie: any) => {
             price: "10",
             isFree: false,
             url: "https://example.com/event",
-            category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
+            category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test" },
         });
 };
 
-it("returns unauthorized error when trying to access other's events", async () => {
-    const cookie = await global.signin();
-    await createEvent("Test Event", cookie);
-    const response = await request(app)
-        .get(`/api/events/user/5f5b689c8f3dbc1de053d5d4?page=1`)
-        .expect(401);
-});
-
-it("return first 6 events for a particular user", async () => {
+it("return first 6 events for a particular category", async () => {
     const cookie = await global.signin();
     await createEvent("Test Event 1", cookie);
     await createEvent("Test Event 2", cookie);
@@ -36,9 +28,6 @@ it("return first 6 events for a particular user", async () => {
     await createEvent("Test Event 5", cookie);
     await createEvent("Test Event 6", cookie);
     await createEvent("Test Event 7", cookie);
-    const response = await request(app)
-        .get(`/api/events/user/5f5b689c8f3dbc1de053d5d5?page=1`)
-        .set("Cookie", cookie)
-        .expect(200);
+    const response = await request(app).get(`/api/events/category/5f5b689c8f3dbc1de053d5d5?page=1`);
     expect(response.body.length).toEqual(6);
 });

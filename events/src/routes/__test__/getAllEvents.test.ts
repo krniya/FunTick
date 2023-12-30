@@ -20,11 +20,15 @@ const createEvent = () => {
         });
 };
 
-it("can fetch a list of events", async () => {
+it("can fetch a list of first 6 events", async () => {
+    await createEvent();
+    await createEvent();
+    await createEvent();
+    await createEvent();
     await createEvent();
     await createEvent();
     await createEvent();
 
-    const response = await request(app).get("/api/events").send().expect(200);
-    expect(response.body.length).toEqual(3);
+    const response = await request(app).get("/api/events?page=1").send();
+    expect(response.body.length).toEqual(6);
 });

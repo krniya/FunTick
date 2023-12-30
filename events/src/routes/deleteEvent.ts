@@ -10,11 +10,6 @@ const router = express.Router();
 router.delete("/api/events/:id", requireAuth, async (req: Request, res: Response) => {
     // * Fetching event
     const event = await Event.findById(req.params.id);
-    console.log(
-        "🚀 ~ file: deleteEvent.ts:13 ~ router.delete ~ event:",
-        event + " " + req.params.id
-    );
-
     // * Event not found / wrong event id
     if (!event) {
         throw new NotFoundError();

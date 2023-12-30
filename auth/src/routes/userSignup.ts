@@ -12,7 +12,8 @@ const router = express.Router();
 router.post(
     "/api/users/signup",
     [
-        body("name").notEmpty().withMessage("Please provide your name"),
+        body("firstName").notEmpty().withMessage("Please provide your fisrt name"),
+        body("lastName").notEmpty().withMessage("Please provide your last name"),
         body("email").isEmail().withMessage("Email must be valid"),
         body("password")
             .trim()
@@ -21,16 +22,12 @@ router.post(
     ],
     validateRequest,
     async (req: Request, res: Response) => {
-        const { name, email, password } = req.body;
+        const { firstName, lastName, email, password } = req.body;
         //* Checking if email is already been used
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             throw new BadRequestError("Email already in use");
         }
-
-        // * Converting full name to first name & last name.
-        var firstName = name.split(" ").slice(0, -1).join(" ");
-        var lastName = name.split(" ").slice(-1).join(" ");
 
         //* User Sign Up
         const user = User.build({ firstName, lastName, email, password });

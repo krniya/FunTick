@@ -11,6 +11,7 @@ import { createCategoryRouter } from "./routes/createCategory";
 import { getCategoriesRouter } from "./routes/getAllCategory";
 import { deleteEventRouter } from "./routes/deleteEvent";
 import { getEventByUserIdRouter } from "./routes/getEventsByUser";
+import { getEventByCategorydRouter } from "./routes/getEventsByCategory";
 
 const app = express();
 app.set("trust proxy", true); //* Express to trust proxied requests
@@ -24,14 +25,15 @@ app.use(
 );
 app.use(currentUser);
 
+app.use(deleteEventRouter); // * Route to delete event
+app.use(getEventByUserIdRouter); // * Route to get Events by user id
 app.use(createCategoryRouter); // * Route to create category
 app.use(getCategoriesRouter); // * Route to get all categories
 app.use(createEventRouter); //* Route to create new Events
 app.use(showEventRouter); //* Route to get Event based on id
 app.use(indexEventRouter); //* Route to get all Events
 app.use(updateEventRouter); //* Route to update the Event details
-app.use(getEventByUserIdRouter); // * Route to get Events by user id
-app.use(deleteEventRouter); // * Route to delete event
+app.use(getEventByCategorydRouter); // * Route to get events by category
 
 //* Error handling for incorrect route
 //* Throwing Error 404 Not Found

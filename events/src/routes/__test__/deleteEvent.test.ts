@@ -5,8 +5,11 @@ import { Event } from "../../models/event";
 
 it("returns a 404 if the provided id does not exist", async () => {
     const id = new mongoose.Types.ObjectId().toHexString();
-    console.log("🚀 ~ file: deleteEvent.test.ts:8 ~ it ~ id:", id);
-    await request(app).delete(`/api/events/${id}`).expect(404);
+    await request(app)
+        .delete(`/api/events/${id}`)
+        .set("Cookie", global.randomSignin())
+        .send()
+        .expect(404);
 });
 
 it("returns a 401 if the user is not authenticated", async () => {

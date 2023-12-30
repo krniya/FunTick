@@ -25,7 +25,6 @@ it("returns the event if found", async () => {
             category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
         })
         .expect(201);
-
     const ticketResponse = await request(app)
         .get(`/api/events/${response.body.id}`)
         .send()
