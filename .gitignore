@@ -134,6 +134,7 @@ dist
 # Temperory removing client from git files
 # client
 client-old
+client-ts
 # infra/k8s/client-depl.yaml
 infra/k8s/client-new-depl.yaml.old
 nats-test

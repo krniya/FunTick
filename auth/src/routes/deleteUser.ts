@@ -15,10 +15,6 @@ const router = express.Router();
 // * @route       DELETE /api/users/:id
 // * @access      Private
 router.delete("/api/users/:id", requireAuth, async (req: Request, res: Response) => {
-    console.log(
-        "🚀 ~ file: deleteUser.ts:20 ~ router.delete ~ req.currentUser!.id:",
-        req.currentUser!.id
-    );
     // * Trying to delete others user
     if (req.params.id !== req.currentUser!.id) {
         throw new NotAuthorizedError();

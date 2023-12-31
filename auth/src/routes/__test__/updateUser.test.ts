@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import { User } from "../../models/users";
 
 const localSignUp = async (email: string) => {
     //* Test Credentials
@@ -15,8 +16,6 @@ const localSignUp = async (email: string) => {
         email,
         password,
     });
-
-    console.log("🚀 ~ file: updateUser.test.ts:13 ~ localSignUp ~ response:", response);
     const cookie = response.get("Set-Cookie");
     return { id: response.body.id, cookie };
 };
@@ -58,6 +57,8 @@ it("should return 200 status when sucessfully update the user", async () => {
             photo: "http://profile.com/pic",
         })
         .expect(200);
+
+    console.log("🚀 ~ file: updateUser.test.ts:50 ~ it ~ res:", res.body);
     expect(res.body.firstName).toEqual("UTest");
     expect(res.body.username).toEqual("testing");
 });
@@ -105,17 +106,15 @@ it("should returns 400 status when invalid or no email provided", async () => {
 
 it("should sets updated cookies after successful changing details", async () => {
     const { id, cookie } = await localSignUp("test@test.com");
-    const response = await request(app)
-        .put(`/api/users/${id}`)
-        .set("Cookie", cookie)
-        .send({
-            firstName: "UTest",
-            lastName: "User",
-            email: "utest@test.com",
-            username: "testing",
-            photo: "http://profile.com/pic",
-        })
-        .expect(200);
+    const response = await request(app).put(`/api/users/${id}`).set("Cookie", cookie).send({
+        firstName: "UTest",
+        lastName: "User",
+        email: "utest@test.com",
+        username: "testing",
+        photo: "http://profile.com/pic",
+    });
+
+    console.log("🚀 ~ file: updateUser.test.ts:110 ~ it ~ response:", response.error);
 
     expect(response.get("Set-Cookie")).toBeDefined();
 });

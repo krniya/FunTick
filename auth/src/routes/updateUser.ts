@@ -40,16 +40,16 @@ router.put(
             throw new BadRequestError("Username already in use");
         }
         // * Updating the user
-        const user = User.findOneAndUpdate(
-            { id: req.params.id },
-            {
-                firstName,
-                lastName,
-                email,
-                username,
-                photo,
-            }
-        );
+        const user = await User.findById({ id: req.params.id });
+        user?.set({
+            firstName,
+            lastName,
+            email,
+            username,
+            photo,
+        });
+        await user?.save();
+        console.log("🚀 ~ file: updateUser.ts:53 ~ user:", user);
 
         //* Generate JWT
         const userJwt = jwt.sign(
