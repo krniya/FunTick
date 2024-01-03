@@ -8,14 +8,14 @@ import {
     BadRequestError,
 } from "@kneeyaa/mshelper";
 import { body } from "express-validator";
-import { Ticket } from "../models/ticket";
+import { Event } from "../models/event";
 import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
-const EXPIRATION_WINDOW_SECONDS = 1 * 60; // * Ticket expiration time
+const EXPIRATION_WINDOW_SECONDS = 1 * 60; // * Event expiration time
 
 // * @desc        Create new order
 // * @route       POST /api/orders
@@ -24,26 +24,26 @@ router.post(
     "/api/orders",
     requireAuth,
     [
-        body("ticketId")
+        body("eventId")
             .not()
             .isEmpty()
             .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-            .withMessage("TicketId must be provided"),
+            .withMessage("EventId must be provided"),
     ],
     validateRequest,
     async (req: Request, res: Response) => {
-        const { ticketId } = req.body;
+        const { eventId } = req.body;
 
-        // * Find the ticket the user is trying to order in the database
-        const ticket = await Ticket.findById(ticketId);
-        if (!ticket) {
+        // * Find the event the user is trying to order in the database
+        const event = await Event.findById(eventId);
+        if (!event) {
             throw new NotFoundError();
         }
 
-        // * Make sure that this ticket is not already reserved
-        const isReserved = await ticket.isReserved();
+        // * Make sure that this event is not already reserved
+        const isReserved = await event.isReserved();
         if (isReserved) {
-            throw new BadRequestError("Ticket is already reserved");
+            throw new BadRequestError("Event is already reserved");
         }
 
         // * Calculate an expiration date for this order
@@ -55,7 +55,7 @@ router.post(
             userId: req.currentUser!.id,
             status: OrderStatus.Created,
             expiresAt: expiration,
-            ticket,
+            event,
         });
         await order.save();
 
@@ -66,9 +66,9 @@ router.post(
             status: order.status,
             userId: order.userId,
             expiresAt: order.expiresAt.toISOString(),
-            ticket: {
-                id: ticket.id,
-                price: ticket.price,
+            event: {
+                id: event.id,
+                price: event.price,
             },
         });
 

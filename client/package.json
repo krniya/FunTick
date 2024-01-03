@@ -21,9 +21,11 @@
     "@stripe/stripe-js": "^2.2.2",
     "@uploadthing/react": "^6.0.2",
     "axios": "^1.6.3",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "next": "14.0.4",
+    "next-auth": "^5.0.0-beta.4",
     "query-string": "^8.1.0",
     "react": "^18",
     "react-datepicker": "^4.25.0",
@@ -39,7 +41,6 @@
     "@types/react": "18.2.46",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
-    "tailwindcss": "^3.3.0",
-    "typescript": "5.3.3"
+    "tailwindcss": "^3.3.0"
   }
 }

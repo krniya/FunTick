@@ -22,50 +22,50 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: krniya/fun-events
-      context: events
-      docker:
-        dockerfile: Dockerfile
-        noCache: false
-        pullParent: false
-        squash: false
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.ts'
-    - image: krniya/fun-orders
-      context: orders
-      docker:
-        dockerfile: Dockerfile
-        noCache: false
-        pullParent: false
-        squash: false
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.ts'
-    - image: krniya/fun-expiration
-      context: expiration
-      docker:
-        dockerfile: Dockerfile
-        noCache: false
-        pullParent: false
-        squash: false
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.ts'
-    - image: krniya/fun-payments
-      context: payments
-      docker:
-        dockerfile: Dockerfile
-        noCache: false
-        pullParent: false
-        squash: false
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.ts'
+    # - image: krniya/fun-events
+    #   context: events
+    #   docker:
+    #     dockerfile: Dockerfile
+    #     noCache: false
+    #     pullParent: false
+    #     squash: false
+    #   sync:
+    #     manual:
+    #       - dest: .
+    #         src: 'src/**/*.ts'
+    # - image: krniya/fun-orders
+    #   context: orders
+    #   docker:
+    #     dockerfile: Dockerfile
+    #     noCache: false
+    #     pullParent: false
+    #     squash: false
+    #   sync:
+    #     manual:
+    #       - dest: .
+    #         src: 'src/**/*.ts'
+    # - image: krniya/fun-expiration
+    #   context: expiration
+    #   docker:
+    #     dockerfile: Dockerfile
+    #     noCache: false
+    #     pullParent: false
+    #     squash: false
+    #   sync:
+    #     manual:
+    #       - dest: .
+    #         src: 'src/**/*.ts'
+    # - image: krniya/fun-payments
+    #   context: payments
+    #   docker:
+    #     dockerfile: Dockerfile
+    #     noCache: false
+    #     pullParent: false
+    #     squash: false
+    #   sync:
+    #     manual:
+    #       - dest: .
+    #         src: 'src/**/*.ts'
     - image: krniya/fun-client
       context: client
       docker:

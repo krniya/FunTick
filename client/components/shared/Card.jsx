@@ -4,13 +4,14 @@ import Link from "next/link";
 import React from "react";
 import { DeleteConfirmation } from "./DeleteConfirmation";
 
-
 const Card = ({ event, hasOrderLink, hidePrice }) => {
-    const { sessionClaims } = { sessionClaims : {
-        userId: "5f5b689c8f3dbc1de053d5u1",
-        organization: "Test",
-        session: "Test"
-    }};
+    const { sessionClaims } = {
+        sessionClaims: {
+            userId: "5f5b689c8f3dbc1de053d5u1",
+            organization: "Test",
+            session: "Test",
+        },
+    };
     const userId = sessionClaims?.userId;
 
     const isEventCreator = userId === event.organizer._id.toString();
@@ -40,7 +41,7 @@ const Card = ({ event, hasOrderLink, hidePrice }) => {
                         <span className='p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60'>
                             {event.isFree ? "FREE" : `$${event.price}`}
                         </span>
-                        <p className='p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1'>
+                        <p className='p-semibold-14 rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1'>
                             {event.category.name}
                         </p>
                     </div>

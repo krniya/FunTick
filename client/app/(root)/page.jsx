@@ -1,21 +1,27 @@
-// import CategoryFilter from "@/components/shared/CategoryFilter";
-// import Collection from "@/components/shared/Collection";
-// import Search from "@/components/shared/Search";
 import CategoryFilter from "@/components/shared/CategoryFilter";
 import Collection from "@/components/shared/Collection";
 import Search from "@/components/shared/Search";
 import { Button } from "@/components/ui/button";
 import { getAllEvents } from "@/data/data";
-// import { getAllEvents } from "@/lib/actions/event.actions";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Home({ searchParams }) {
+export default function Home({ searchParams }) {
     const events = {
         data: JSON.parse(JSON.stringify(getAllEvents)),
         totalPages: 1,
-    }
-    const page = 1
+    };
+    // const fetchdata = async () => {
+    //     const { data } = await axios.get(
+    //         "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser"
+    //     );
+
+    //     console.log("🚀 ~ file: page.jsx:20 ~ Home ~ data:", data);
+    // };
+    // fetchdata();
+
+    const page = 1;
     return (
         <>
             <section className='bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10'>
