@@ -40,6 +40,7 @@ export class EventCreatedListener extends Listener<EventCreatedEvent> {
             category,
             organizer,
         });
+
         await event.save();
         //* Acknowlegement
         msg.ack();

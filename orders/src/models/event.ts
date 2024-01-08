@@ -85,7 +85,7 @@ eventSchema.plugin(updateIfCurrentPlugin);
 //* using it instead of 'new Event' to add type check
 eventSchema.statics.build = (attrs: EventAttrs) => {
     return new Event({
-        _id: new mongoose.Types.ObjectId(), // Ensure that _id is set correctly
+        _id: attrs.id, // Ensure that _id is set correctly
         ...attrs,
     });
 };
@@ -98,11 +98,11 @@ eventSchema.statics.findByEvent = (event: { id: string; version: number }) => {
     });
 };
 
-//* Function to check is ticket is reserved
+//* Function to check is event is reserved
 eventSchema.methods.isReserved = async function () {
-    // this === the ticket document that we just called 'isReserved' on
+    // this === the event document that we just called 'isReserved' on
     const existingOrder = await Order.findOne({
-        ticket: this,
+        event: this,
         status: {
             $in: [OrderStatus.Created, OrderStatus.AwaitingPayment, OrderStatus.Complete],
         },

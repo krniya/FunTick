@@ -4,22 +4,32 @@ import { OrderStatus, ExpirationCompleteEvent } from "@kneeyaa/mshelper";
 import { ExpirationCompleteListener } from "../expiration-complete-listener";
 import { natsWrapper } from "../../../nats-wrapper";
 import { Order } from "../../../models/order";
-import { Ticket } from "../../../models/ticket";
+import { Event } from "../../../models/event";
 
 const setup = async () => {
     const listener = new ExpirationCompleteListener(natsWrapper.client);
 
-    const ticket = Ticket.build({
+    const event = Event.build({
         id: new mongoose.Types.ObjectId().toHexString(),
-        title: "concert",
-        price: 20,
+        title: "Test Event",
+        description: "This is a test event",
+        location: "Test Location",
+        createdAt: new Date(),
+        imageUrl: "https://example.com/image.jpg",
+        startDateTime: new Date("2023-01-01T12:00:00Z"),
+        endDateTime: new Date("2023-01-01T15:00:00Z"),
+        price: "10",
+        isFree: false,
+        url: "https://example.com/event",
+        organizer: { _id: "5f5b689c8f3dbc1de053d5d5", firstName: "Test", lastName: "User" },
+        category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
     });
-    await ticket.save();
+    await event.save();
     const order = Order.build({
+        user: { _id: "5f5b689c8f3dbc1de053d5d5", firstName: "Test", lastName: "User" },
         status: OrderStatus.Created,
-        userId: "alskdfj",
         expiresAt: new Date(),
-        ticket,
+        event: { _id: event.id, title: event.title, price: event.price },
     });
     await order.save();
 
@@ -32,7 +42,7 @@ const setup = async () => {
         ack: jest.fn(),
     };
 
-    return { listener, order, ticket, data, msg };
+    return { listener, order, event, data, msg };
 };
 
 it("updates the order status to cancelled", async () => {

@@ -6,6 +6,7 @@ import {
     NotFoundError,
     OrderStatus,
     BadRequestError,
+    NotAuthorizedError,
 } from "@kneeyaa/mshelper";
 import { body } from "express-validator";
 import { Event } from "../models/event";
@@ -52,24 +53,35 @@ router.post(
 
         // * Build the order and save it to the database
         const order = Order.build({
-            userId: req.currentUser!.id,
+            user: {
+                _id: req.currentUser?.id,
+                firstName: req.currentUser?.firstName,
+                lastName: req.currentUser?.lastName,
+            },
             status: OrderStatus.Created,
             expiresAt: expiration,
-            event,
+            event: {
+                _id: event.id,
+                title: event.title,
+                price: event.price,
+            },
         });
         await order.save();
 
         // * Publish an event saying that an order was created
         new OrderCreatedPublisher(natsWrapper.client).publish({
             id: order.id,
-            version: order.version,
-            status: order.status,
-            userId: order.userId,
-            expiresAt: order.expiresAt.toISOString(),
-            event: {
-                id: event.id,
-                price: event.price,
+            createdAt: order.createdAt,
+            stripeId: "",
+            totalAmount: order.event.price,
+            event: order.event,
+            buyer: {
+                _id: order.user._id,
+                firstName: order.user.firstName,
+                lastName: order.user.lastName,
             },
+            expiresAt: order.expiresAt,
+            version: order.version,
         });
 
         res.status(201).send(order);

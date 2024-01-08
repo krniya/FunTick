@@ -3,6 +3,7 @@ import { app } from "../../app";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { User } from "../../models/users";
+import { body } from "express-validator";
 
 const localSignUp = async (email: string) => {
     //* Test Credentials
@@ -46,7 +47,7 @@ const randomCookie = () => {
 
 it("should return 200 status when sucessfully update the user", async () => {
     const { id, cookie } = await localSignUp("test@test.com");
-    const res = await request(app)
+    await request(app)
         .put(`/api/users/${id}`)
         .set("Cookie", cookie)
         .send({
@@ -58,9 +59,9 @@ it("should return 200 status when sucessfully update the user", async () => {
         })
         .expect(200);
 
-    console.log("🚀 ~ file: updateUser.test.ts:50 ~ it ~ res:", res.body);
-    expect(res.body.firstName).toEqual("UTest");
-    expect(res.body.username).toEqual("testing");
+    const user = await User.findById(id);
+    expect(user?.firstName).toEqual("UTest");
+    expect(user?.username).toEqual("testing");
 });
 
 it("should returns 400 status when no first name provided", async () => {
@@ -113,9 +114,6 @@ it("should sets updated cookies after successful changing details", async () => 
         username: "testing",
         photo: "http://profile.com/pic",
     });
-
-    console.log("🚀 ~ file: updateUser.test.ts:110 ~ it ~ response:", response.error);
-
     expect(response.get("Set-Cookie")).toBeDefined();
 });
 

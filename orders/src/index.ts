@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
-import { TicketCreatedListener } from "./events/listeners/event-created-listener";
-import { TicketUpdatedListener } from "./events/listeners/event-updated-listener";
+import { EventCreatedListener } from "./events/listeners/event-created-listener";
+import { EventUpdatedListener } from "./events/listeners/event-updated-listener";
 import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
 import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 
@@ -31,8 +31,8 @@ const connectWithNATS = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
 
     //* Event listner
-    new TicketCreatedListener(natsWrapper.client).listen();
-    new TicketUpdatedListener(natsWrapper.client).listen();
+    new EventCreatedListener(natsWrapper.client).listen();
+    new EventUpdatedListener(natsWrapper.client).listen();
     new ExpirationCompleteListener(natsWrapper.client).listen();
     new PaymentCreatedListener(natsWrapper.client).listen();
 };

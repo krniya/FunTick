@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import {
     BadRequestError,
     NotAuthorizedError,
+    NotFoundError,
     requireAuth,
     validateRequest,
 } from "@kneeyaa/mshelper";
@@ -40,16 +41,20 @@ router.put(
             throw new BadRequestError("Username already in use");
         }
         // * Updating the user
-        const user = await User.findById({ id: req.params.id });
-        user?.set({
+        const user = await User.findById(req.params.id);
+
+        // * Somehow if things messed up
+        if (!user) {
+            throw new NotFoundError();
+        }
+        user.set({
             firstName,
             lastName,
             email,
             username,
             photo,
         });
-        await user?.save();
-        console.log("🚀 ~ file: updateUser.ts:53 ~ user:", user);
+        await user.save();
 
         //* Generate JWT
         const userJwt = jwt.sign(

@@ -1,26 +1,28 @@
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "@kneeyaa/mshelper";
-import { TicketDoc } from "./ticket";
 
 export { OrderStatus };
 
 //* An interface that describes the properties
 //* that are required to create a new Order
 interface OrderAttrs {
-    userId: string;
+    user: { _id?: string; firstName?: string; lastName?: string };
     status: OrderStatus;
     expiresAt: Date;
-    ticket: TicketDoc;
+    event: { _id: string; title: string; price: string };
 }
 
 //* An interface that describes the properties
 //* that a order document model has
 interface OrderDoc extends mongoose.Document {
-    userId: string;
+    _id: string;
+    user: { _id: string; firstName: string; lastName: string };
     status: OrderStatus;
     expiresAt: Date;
-    ticket: TicketDoc;
+    event: { _id: string; title: string; price: string };
+    createdAt: Date;
+    stripeId: Date;
     version: number;
 }
 
@@ -31,12 +33,12 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 }
 
 //* Order Schema
-//* {userId, status, expiresAt, ticket, toJSON()}
+//* {user, status, expiresAt, event, createdAt, toJSON()}
 const orderSchema = new mongoose.Schema(
     {
-        userId: {
-            type: String,
-            required: true,
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
         },
         status: {
             type: String,
@@ -47,9 +49,16 @@ const orderSchema = new mongoose.Schema(
         expiresAt: {
             type: mongoose.Schema.Types.Date,
         },
-        ticket: {
+        event: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Ticket",
+            ref: "Event",
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+        stripeId: {
+            type: String,
         },
     },
     {

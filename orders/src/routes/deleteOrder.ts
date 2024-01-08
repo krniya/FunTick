@@ -13,7 +13,7 @@ router.delete("/api/orders/:orderId", requireAuth, async (req: Request, res: Res
     const { orderId } = req.params;
 
     // * Fetching order by order id
-    const order = await Order.findById(orderId).populate("ticket");
+    const order = await Order.findById(orderId).populate("event");
 
     // * If no order found / wrong order id provided
     if (!order) {
@@ -21,7 +21,7 @@ router.delete("/api/orders/:orderId", requireAuth, async (req: Request, res: Res
     }
 
     // * If unauthorized accessed
-    if (order.userId !== req.currentUser!.id) {
+    if (order.user._id.toString() !== req.currentUser!.id) {
         throw new NotAuthorizedError();
     }
     // * Changing order status
@@ -31,10 +31,12 @@ router.delete("/api/orders/:orderId", requireAuth, async (req: Request, res: Res
     // * publishing an event saying this was cancelled!
     new OrderCancelledPublisher(natsWrapper.client).publish({
         id: order.id,
+        createdAt: order.createdAt,
+        stripeId: "",
+        totalAmount: order.event.price,
+        event: order.event,
+        buyer: order.user,
         version: order.version,
-        ticket: {
-            id: order.ticket.id,
-        },
     });
 
     res.status(204).send(order);

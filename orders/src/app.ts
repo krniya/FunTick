@@ -3,10 +3,10 @@ import "express-async-errors";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { currentUser, NotFoundError, errorHandler } from "@kneeyaa/mshelper";
-import { deleteOrderRouter } from "./routes/delete";
-import { indexOrderRouter } from "./routes";
-import { newOrderRouter } from "./routes/new";
-import { showOrderRouter } from "./routes/show";
+import { deleteOrderRouter } from "./routes/deleteOrder";
+import { indexOrderRouter } from "./routes/getAllOrders";
+import { newOrderRouter } from "./routes/createOrder";
+import { showOrderRouter } from "./routes/getOrder";
 
 const app = express();
 app.set("trust proxy", true); //* Express to trust proxied requests

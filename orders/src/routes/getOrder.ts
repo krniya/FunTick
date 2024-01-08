@@ -9,13 +9,13 @@ const router = express.Router();
 // * @access      Private
 router.get("/api/orders/:orderId", requireAuth, async (req: Request, res: Response) => {
     // * Fetching order by order id
-    const order = await Order.findById(req.params.orderId).populate("ticket");
+    const order = await Order.findById(req.params.orderId).populate("event");
     // * Order not found / wrong order id provided
     if (!order) {
         throw new NotFoundError();
     }
     // * Unauthorized edit
-    if (order.userId !== req.currentUser!.id) {
+    if (order.user._id.toString() !== req.currentUser!.id) {
         throw new NotAuthorizedError();
     }
 

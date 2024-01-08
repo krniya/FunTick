@@ -11,7 +11,7 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
 
     async onMessage(data: ExpirationCompleteEvent["data"], msg: Message) {
         // * Fetching the order
-        const order = await Order.findById(data.orderId).populate("ticket");
+        const order = await Order.findById(data.orderId).populate("event");
 
         // * If order not found / wrong order id provided
         if (!order) {
@@ -30,13 +30,15 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
 
         await order.save();
 
-        //* Publishing order cancelation
+        //* Publishing order cancellation
         await new OrderCancelledPublisher(this.client).publish({
             id: order.id,
+            createdAt: order.createdAt,
+            stripeId: "",
+            totalAmount: order.event.price,
+            event: order.event,
+            buyer: order.user,
             version: order.version,
-            ticket: {
-                id: order.ticket.id,
-            },
         });
 
         //* Acknowlegement
