@@ -34,8 +34,6 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
         await new OrderCancelledPublisher(this.client).publish({
             id: order.id,
             createdAt: order.createdAt,
-            stripeId: "",
-            totalAmount: order.event.price,
             event: order.event,
             buyer: order.user,
             version: order.version,

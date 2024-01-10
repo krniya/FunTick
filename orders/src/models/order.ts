@@ -37,8 +37,9 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 const orderSchema = new mongoose.Schema(
     {
         user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            _id: String,
+            firstName: String,
+            lastName: String,
         },
         status: {
             type: String,
@@ -50,8 +51,9 @@ const orderSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.Date,
         },
         event: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Event",
+            _id: String,
+            firstName: String,
+            lastName: String,
         },
         createdAt: {
             type: Date,

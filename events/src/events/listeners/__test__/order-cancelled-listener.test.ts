@@ -8,7 +8,7 @@ import { Event } from "../../../models/event";
 const setup = async () => {
     const listener = new OrderCancelledListener(natsWrapper.client);
 
-    const order = { _id: new mongoose.Types.ObjectId().toHexString() };
+    const order = new mongoose.Types.ObjectId().toHexString();
     const event = Event.build({
         title: "Test Event",
         description: "This is a test event",
@@ -23,15 +23,24 @@ const setup = async () => {
         category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
         organizer: { _id: "5f5b689c8f3dbc1de053d5d5", firstName: "Test", lastName: "User" },
     });
-    event.set({ order });
+    event.set({ order: order });
     await event.save();
+    console.log("🚀 ~ setup ~ event:", event);
 
     const data: OrderCancelledEvent["data"] = {
-        id: order._id,
+        id: order,
         version: 0,
         event: {
-            id: event.id,
+            _id: event.id,
+            title: event.title,
+            price: event.price,
         },
+        buyer: {
+            _id: "5f5b689c8f3dbc1de053d5d5",
+            firstName: "Test",
+            lastName: "User",
+        },
+        createdAt: new Date(),
     };
 
     // @ts-ignore
@@ -48,6 +57,7 @@ it("updates the event, publishes an event, and acks the message", async () => {
     await listener.onMessage(data, msg);
 
     const updatedEvent = await Event.findById(event.id);
+    console.log("🚀 ~ it ~ updatedEvent:", updatedEvent);
     expect(updatedEvent!.order).not.toBeDefined();
     expect(msg.ack).toHaveBeenCalled();
     expect(natsWrapper.client.publish).toHaveBeenCalled();

@@ -59,6 +59,6 @@ it("fetches orders for an particular user", async () => {
     expect(response.body.length).toEqual(2);
     expect(response.body[0].id).toEqual(orderOne.id);
     expect(response.body[1].id).toEqual(orderTwo.id);
-    expect(response.body[0].event.id).toEqual(eventTwo.id);
-    expect(response.body[1].event.id).toEqual(eventThree.id);
+    expect(response.body[0].event._id).toEqual(eventTwo.id);
+    expect(response.body[1].event._id).toEqual(eventThree.id);
 });

@@ -1,5 +1,5 @@
 import { Message } from "node-nats-streaming";
-import { Listener, OrderCreatedEvent, Subjects } from "@kneeyaa/mshelper";
+import { Listener, OrderCreatedEvent, Subjects, OrderStatus } from "@kneeyaa/mshelper";
 import { queueGroupName } from "./queue-group-name";
 import { Order } from "../../models/order";
 
@@ -12,13 +12,13 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
         const order = Order.build({
             id: data.id,
-            price: data.ticket.price,
+            createdAt: data.createdAt,
+            event: data.event,
+            user: data.buyer,
+            expiresAt: data.expiresAt,
             status: data.status,
-            userId: data.userId,
-            version: data.version,
         });
         await order.save();
-
         // * Acknowlegement
         msg.ack();
     }

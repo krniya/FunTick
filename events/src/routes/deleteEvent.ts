@@ -14,6 +14,7 @@ router.delete("/api/events/:id", requireAuth, async (req: Request, res: Response
     if (!event) {
         throw new NotFoundError();
     }
+
     // * Event already reserved
     if (event.order) {
         throw new BadRequestError("Cannot delete a reserved event");

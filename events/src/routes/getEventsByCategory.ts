@@ -13,7 +13,7 @@ router.get("/api/events/category/:id", async (req: Request, res: Response) => {
     const page = Number(req.query.page) || 1;
     const skipAmount = (page - 1) * limit;
 
-    const events = await Event.find({ category: req.params.id })
+    const events = await Event.find({ "category._id": req.params.id })
         .sort({ createdAt: "desc" })
         .skip(skipAmount)
         .limit(limit);

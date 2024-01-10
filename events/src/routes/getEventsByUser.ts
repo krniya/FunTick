@@ -16,7 +16,7 @@ router.get("/api/events/user/:userId", requireAuth, async (req: Request, res: Re
         throw new NotAuthorizedError();
     }
     const events = await Event.find({
-        organizer: req.params.userId,
+        "organizer._id": req.params.userId,
     })
         .sort({ createdAt: "desc" })
         .skip(skipAmount)

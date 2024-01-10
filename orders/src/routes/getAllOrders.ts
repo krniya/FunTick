@@ -10,8 +10,8 @@ const router = express.Router();
 router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
     // * Find all the orders
     const orders = await Order.find({
-        user: req.currentUser!.id,
-    }).populate("event");
+        "user._id": req.currentUser!.id,
+    });
 
     res.send(orders);
 });

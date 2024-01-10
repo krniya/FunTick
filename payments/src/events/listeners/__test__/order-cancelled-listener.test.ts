@@ -10,19 +10,21 @@ const setup = async () => {
 
     const order = Order.build({
         id: new mongoose.Types.ObjectId().toHexString(),
+        user: { _id: "5f5b689c8f3dbc1de053d5e5", firstName: "Test", lastName: "User" },
+        createdAt: new Date(),
         status: OrderStatus.Created,
-        price: 10,
-        userId: "asldkfj",
-        version: 0,
+        expiresAt: new Date("2025-01-01T15:00:00Z"),
+        event: { _id: "5f5b689c8f3dbc1de053d5e5", title: "Test Title", price: "20" },
     });
     await order.save();
 
     const data: OrderCancelledEvent["data"] = {
         id: order.id,
+        createdAt: order.createdAt,
+        totalAmount: "10",
+        event: order.event,
+        buyer: order.user,
         version: 1,
-        ticket: {
-            id: "asldkfj",
-        },
     };
 
     // @ts-ignore

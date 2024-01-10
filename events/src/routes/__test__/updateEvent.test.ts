@@ -156,7 +156,7 @@ it("updates the event provided valid inputs", async () => {
             category: { _id: "5f5b689c8f3dbc1de053d5d5", name: "Test Category" },
         });
 
-    await request(app)
+    const res = await request(app)
         .put(`/api/events/${response.body.id}`)
         .set("Cookie", cookie)
         .send({
@@ -174,7 +174,6 @@ it("updates the event provided valid inputs", async () => {
             organizer: { _id: "5f5b689c8f3dbc1de053d5d5", firstName: "Test", lastName: "User" },
         })
         .expect(200);
-
     const eventResponse = await request(app).get(`/api/events/${response.body.id}`).send();
 
     expect(eventResponse.body.title).toEqual("Test Event new");
@@ -201,7 +200,7 @@ it("rejects updates if the event is reserved", async () => {
         .expect(201);
 
     const event = await Event.findById(response.body.id);
-    event!.set({ order: { _id: new mongoose.Types.ObjectId().toHexString() } });
+    event!.set({ order: new mongoose.Types.ObjectId().toHexString() });
     await event!.save();
 
     await request(app)

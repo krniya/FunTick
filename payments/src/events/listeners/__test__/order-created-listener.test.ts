@@ -9,15 +9,22 @@ const setup = async () => {
     const listener = new OrderCreatedListener(natsWrapper.client);
 
     const data: OrderCreatedEvent["data"] = {
-        id: new mongoose.Types.ObjectId().toHexString(),
-        version: 0,
-        expiresAt: "alskdjf",
-        userId: "alskdjf",
+        id: "5f5b689c8f3dbc1de053d5d5",
+        createdAt: new Date(),
+        totalAmount: "10",
         status: OrderStatus.Created,
-        ticket: {
-            id: "alskdfj",
-            price: 10,
+        event: {
+            _id: "5f5b689c8f3dbc1de053d5d5",
+            title: "Test Title",
+            price: "10",
         },
+        buyer: {
+            _id: "5f5b689c8f3dbc1de053d5d5",
+            firstName: "Test",
+            lastName: "User",
+        },
+        expiresAt: new Date(),
+        version: 1,
     };
 
     // @ts-ignore
@@ -34,8 +41,7 @@ it("replicates the order info", async () => {
     await listener.onMessage(data, msg);
 
     const order = await Order.findById(data.id);
-
-    expect(order!.price).toEqual(data.ticket.price);
+    expect(order!.event._id.toString()).toEqual(data.event._id);
 });
 
 it("acks the message", async () => {

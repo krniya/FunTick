@@ -59,9 +59,13 @@ const eventSchema = new mongoose.Schema(
         price: { type: String, require: true },
         isFree: { type: Boolean, default: false },
         url: { type: String },
-        order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
-        category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
-        organizer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        order: { type: String },
+        category: { _id: String, name: String },
+        organizer: {
+            _id: String,
+            firstName: String,
+            lastName: String,
+        },
     },
     {
         toJSON: {

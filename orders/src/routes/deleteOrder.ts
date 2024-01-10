@@ -32,8 +32,6 @@ router.delete("/api/orders/:orderId", requireAuth, async (req: Request, res: Res
     new OrderCancelledPublisher(natsWrapper.client).publish({
         id: order.id,
         createdAt: order.createdAt,
-        stripeId: "",
-        totalAmount: order.event.price,
         event: order.event,
         buyer: order.user,
         version: order.version,

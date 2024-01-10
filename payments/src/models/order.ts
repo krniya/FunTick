@@ -2,23 +2,30 @@ import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "@kneeyaa/mshelper";
 
+export { OrderStatus };
+
 //* An interface that describes the properties
 //* that are required to create a new Order
 interface OrderAttrs {
     id: string;
-    version: number;
-    userId: string;
-    price: number;
+    user: { _id?: string; firstName?: string; lastName?: string };
+    createdAt: Date;
     status: OrderStatus;
+    expiresAt: Date;
+    event: { _id: string; title: string; price: string };
 }
 
 //* An interface that describes the properties
 //* that a order document model has
 interface OrderDoc extends mongoose.Document {
-    version: number;
-    userId: string;
-    price: number;
+    _id: string;
+    user: { _id: string; firstName: string; lastName: string };
     status: OrderStatus;
+    expiresAt: Date;
+    event: { _id: string; title: string; price: string };
+    createdAt: Date;
+    stripeId: Date;
+    version: number;
 }
 
 //* An interface that describes the properties
@@ -28,20 +35,34 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 }
 
 //* Order Schema
-//* {userId, status, ticket, toJSON()}
+//* {user, status, expiresAt, event, createdAt, toJSON()}
 const orderSchema = new mongoose.Schema(
     {
-        userId: {
-            type: String,
-            required: true,
-        },
-        price: {
-            type: Number,
-            required: true,
+        user: {
+            _id: String,
+            firstName: String,
+            lastName: String,
         },
         status: {
             type: String,
             required: true,
+            enum: Object.values(OrderStatus),
+            default: OrderStatus.Created,
+        },
+        expiresAt: {
+            type: mongoose.Schema.Types.Date,
+        },
+        event: {
+            _id: String,
+            firstName: String,
+            lastName: String,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+        stripeId: {
+            type: String,
         },
     },
     {
@@ -63,10 +84,7 @@ orderSchema.plugin(updateIfCurrentPlugin);
 orderSchema.statics.build = (attrs: OrderAttrs) => {
     return new Order({
         _id: attrs.id,
-        version: attrs.version,
-        price: attrs.price,
-        userId: attrs.userId,
-        status: attrs.status,
+        ...attrs,
     });
 };
 

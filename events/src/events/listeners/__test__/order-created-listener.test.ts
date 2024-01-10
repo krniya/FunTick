@@ -29,13 +29,13 @@ const setup = async () => {
     //* Create the fake data event
     const data: OrderCreatedEvent["data"] = {
         id: new mongoose.Types.ObjectId().toHexString(),
-        version: 0,
-        status: OrderStatus.Created,
-        userId: "5f5b689c8f3dbc1de053d5d6",
-        expiresAt: "alskdjf",
+        createdAt: new Date(),
+        buyer: { _id: "5f5b689c8f3dbc1de053d5d6", firstName: "Test", lastName: "User" },
+        expiresAt: new Date(),
         event: {
-            id: event.id,
-            price: parseInt(event.price),
+            _id: event.id,
+            title: event.title,
+            price: event.price,
         },
     };
 
@@ -53,7 +53,7 @@ it("sets the order id of the event", async () => {
     await listener.onMessage(data, msg);
 
     const updatedEvent = await Event.findById(event.id);
-    expect(updatedEvent!.order!._id.toString()).toEqual(data.id);
+    expect(updatedEvent!.order).toEqual(data.id);
 });
 
 it("acks the message", async () => {

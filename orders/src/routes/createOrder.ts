@@ -37,6 +37,7 @@ router.post(
 
         // * Find the event the user is trying to order in the database
         const event = await Event.findById(eventId);
+        console.log("🚀 ~ event:", event);
         if (!event) {
             throw new NotFoundError();
         }
@@ -72,8 +73,6 @@ router.post(
         new OrderCreatedPublisher(natsWrapper.client).publish({
             id: order.id,
             createdAt: order.createdAt,
-            stripeId: "",
-            totalAmount: order.event.price,
             event: order.event,
             buyer: {
                 _id: order.user._id,
@@ -81,7 +80,6 @@ router.post(
                 lastName: order.user.lastName,
             },
             expiresAt: order.expiresAt,
-            version: order.version,
         });
 
         res.status(201).send(order);

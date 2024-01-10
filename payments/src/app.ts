@@ -3,7 +3,7 @@ import "express-async-errors";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, NotFoundError, currentUser } from "@kneeyaa/mshelper";
-import { createChargeRouter } from "./routes/new";
+import { createChargeRouter } from "./routes/makePayment";
 
 const app = express();
 app.set("trust proxy", true); //* Express to trust proxied requests

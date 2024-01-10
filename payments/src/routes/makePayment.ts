@@ -27,9 +27,10 @@ router.post(
     validateRequest,
     async (req: Request, res: Response) => {
         const { token, orderId } = req.body;
-        console.log(token);
+
         // * Fetching order details
         const order = await Order.findById(orderId);
+        console.log("🚀 ~ file: makePayment.ts:33 ~ order:", order);
 
         // * If no order found
         if (!order) {
@@ -37,7 +38,7 @@ router.post(
         }
 
         // * Unauthorized order
-        if (order.userId !== req.currentUser!.id) {
+        if (order.user._id.toString() !== req.currentUser!.id) {
             throw new NotAuthorizedError();
         }
 
@@ -47,36 +48,55 @@ router.post(
         }
 
         // * Creating the charge amount to be processed via stripe
-        const product = await stripe.products.create({
-            name: "Test",
-            default_price_data: {
-                unit_amount: order.price * 100,
-                currency: "usd",
-            },
-            expand: ["default_price"],
-        });
+        // const product = await stripe.products.create({
+        //     name: "Test",
+        //     default_price_data: {
+        //         unit_amount: parseInt(order.event.price) * 100,
+        //         currency: "usd",
+        //     },
+        //     expand: ["default_price"],
+        // });
 
-        const price = await stripe.prices.create({
-            product: product.id,
-            unit_amount: order.price * 100,
-            currency: "usd",
-        });
+        // const price = await stripe.prices.create({
+        //     product: product.id,
+        //     unit_amount: order.price * 100,
+        //     currency: "usd",
+        // });
 
-        const charge = await stripe.checkout.sessions.create({
+        // const charge = await stripe.checkout.sessions.create({
+        //     line_items: [
+        //         {
+        //             // *  Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        //             price: price.id,
+        //             quantity: 1,
+        //         },
+        //     ],
+        //     mode: "payment",
+        //     success_url: "http://localhost:4242/success",
+        // });
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
             line_items: [
                 {
-                    // *  Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    price: price.id,
+                    price_data: {
+                        currency: "usd",
+                        product_data: {
+                            name: `Event: ${order.event.title}`,
+                        },
+                        unit_amount: parseInt(order.event.price) * 100, // amount in cents
+                    },
                     quantity: 1,
                 },
             ],
             mode: "payment",
             success_url: "http://localhost:4242/success",
         });
+
         // * Updating the payments table
         const payment = Payment.build({
             orderId,
-            stripeId: charge.id,
+            stripeId: session.id,
         });
         payment.save();
 

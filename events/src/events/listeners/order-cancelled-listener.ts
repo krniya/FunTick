@@ -11,7 +11,8 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
 
     async onMessage(data: OrderCancelledEvent["data"], msg: Message) {
         //* Fetching the event
-        const event = await Event.findById(data.event.id);
+        const event = await Event.findById(data.event._id);
+        console.log("🚀 ~ OrderCancelledListener ~ onMessage ~ event:", event);
 
         //* Event not found / Wrong event id provided
         if (!event) {
@@ -21,7 +22,9 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
         //* Event updated
         event.set({ order: undefined });
         await event.save();
-
+        console.log("🚀 ~ OrderCancelledListener ~ onMessage ~ event:", event);
+        const eve = await Event.findById(event.id);
+        console.log("🚀 ~ OrderCancelledListener ~ onMessage ~ eve:", eve);
         //* Event Updation event published
         await new EventUpdatedPublisher(this.client).publish({
             id: event.id,
