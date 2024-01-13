@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 
 export default function CreateAccount() {
     const router = useRouter();
@@ -41,11 +42,11 @@ export default function CreateAccount() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl");
 
-    const onClick = (provider) => {
-        signIn(provider, {
-            callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-        });
-    };
+    // const onClick = (provider) => {
+    //     signIn(provider, {
+    //         callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+    //     });
+    // };
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -54,10 +55,25 @@ export default function CreateAccount() {
         },
     });
 
-    function onSubmit(values) {
+    async function onSubmit(values) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log(values);
+        // console.log(values);
+        const payload = {
+            email: values.email,
+            password: values.password,
+        };
+
+        try {
+            const response = await axios.post("/api/users/signin", payload);
+            console.log("🚀 ~ onSubmit ~ response:", response);
+            if (response.status === 200) {
+                form.reset();
+                router.push(`/`);
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
     return (
         <div className='grid gap-4'>

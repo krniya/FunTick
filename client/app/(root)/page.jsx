@@ -40,7 +40,7 @@ export default function Home({ searchParams }) {
                     </div>
 
                     <Image
-                        src='/assets/images/hero.png'
+                        src='/assets/images/event.svg'
                         alt='hero'
                         width={1000}
                         height={1000}

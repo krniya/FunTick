@@ -30,6 +30,8 @@ it("returns the event if found", async () => {
         .send()
         .expect(200);
 
+    console.log(response.body);
     expect(ticketResponse.body.title).toEqual("Test Event");
     expect(ticketResponse.body.price).toEqual("10");
+    expect(ticketResponse.body.organizer.firstName).toEqual("Test");
 });

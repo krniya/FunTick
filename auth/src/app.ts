@@ -11,15 +11,23 @@ import { NotFoundError, currentUser, errorHandler } from "@kneeyaa/mshelper";
 import { userUpdateRouter } from "./routes/updateUser";
 import { userDeleteRouter } from "./routes/deleteUser";
 
+require("dotenv").config();
+
+const cors = require("cors");
 const app = express();
+
 app.set("trust proxy", true); //* Express to trust proxied requests
+
+// * Enable CORS for all routes
+app.use(cors());
 
 app.use(json());
 app.use(
     cookieSession({
         //* Cookie seesion to get JWT from cookie
         signed: false, //* As we got JWT, don't required to encrypt cookie
-        secure: process.env.NODE_ENV !== "test", //* Only accept request at HTTPS (Prod environment only)
+        // secure: process.env.NODE_ENV !== "test", //* Only accept request at HTTPS (Prod environment only)
+        secure: false,
     })
 );
 app.use(currentUser);

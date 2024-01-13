@@ -1,15 +1,22 @@
+"use client";
+
 import CheckoutButton from "@/components/shared/CheckoutButton";
 import Collection from "@/components/shared/Collection";
 import { getEventById, getRelevantEvent } from "@/data/data";
 import { formatDateTime } from "@/lib/utils";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const EventDetails = async ({ params: { id }, searchParams }) => {
-    const event = JSON.parse(JSON.stringify(getEventById))
+    const event = JSON.parse(JSON.stringify(getEventById));
 
     const relatedEvents = {
         data: JSON.parse(JSON.stringify(getRelevantEvent)),
         totalPages: 1,
+    };
+    const router = useRouter();
+    if (!currentUser) {
+        router.push("/signin");
     }
 
     return (

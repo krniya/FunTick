@@ -1,11 +1,17 @@
-import EventForm from "@/components/shared/EventForm";
+"use client";
 
-const CreateEvent = () => {
+import EventForm from "@/components/shared/EventForm";
+import { useRouter } from "next/navigation";
+
+const CreateEvent = ({ currentUser }) => {
     // TODO - Authenticate user
 
     // TODO - Fetch user
     const userId = "fetch user";
-
+    const router = useRouter();
+    if (!currentUser) {
+        router.push("/signin");
+    }
     return (
         <>
             <section className='bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>

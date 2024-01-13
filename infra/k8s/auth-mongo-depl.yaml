@@ -1,3 +1,5 @@
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,6 +24,13 @@ spec:
           limits:
             memory: "1024Mi"
             cpu: "500m"
+        volumeMounts:
+          - name: mongodb-storage
+            mountPath: /data/db
+      volumes:
+      - name: mongodb-storage
+        persistentVolumeClaim:
+          claimName: auth-mongodb-pvc
 
 ---
 

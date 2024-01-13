@@ -1,10 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import NavItems from "./NavItems";
 import MobileNav from "./MobileNav";
+import { UserNav } from "./UserNav";
 
-const Header = ({currentUser}) => {
+const Header = ({ currentUser }) => {
+    console.log("🚀 ~ Header ~ currentUser:", currentUser);
     return (
         <header className='w-full border-b'>
             <div className='wrapper flex items-center justify-between'>
@@ -16,18 +20,17 @@ const Header = ({currentUser}) => {
                         alt='Evently logo'
                     />
                 </Link>
-                
-                <nav className='md:flex-between hidden w-full max-w-xs'>
-                    <NavItems />
-                </nav>
-                
-                <div className='flex w-32 justify-end gap-3'>
-                    <MobileNav />
-
+                {currentUser ? (
+                    <nav asChild>
+                        <nav className='w-full max-w-xs'>
+                            <UserNav currentUser={currentUser} />
+                        </nav>
+                    </nav>
+                ) : (
                     <Button asChild className='rounded-full' size='lg'>
                         <Link href='/signin'>Login</Link>
                     </Button>
-                </div>
+                )}
             </div>
         </header>
     );
