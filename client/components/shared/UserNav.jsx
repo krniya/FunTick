@@ -32,7 +32,7 @@ export function UserNav({ currentUser }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
+                <Button variant='ghost' className='relative h-12 w-12 rounded-full'>
                     <Avatar className='h-8 w-8'>
                         <AvatarImage src='/assets/images/avatar.jpg' alt='default' />
                         <AvatarFallback>SC</AvatarFallback>
@@ -51,7 +51,9 @@ export function UserNav({ currentUser }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem onSelect={handleProfile}>Profile</DropdownMenuItem>
-                    <DropdownMenuItem onSelect={handleCreateEvent}>Create Event</DropdownMenuItem>
+                    <DropdownMenuItem onSelect={handleCreateEvent}>
+                        Create Event Ticket
+                    </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={handleLogout}>Log out</DropdownMenuItem>

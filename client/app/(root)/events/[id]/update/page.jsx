@@ -1,14 +1,9 @@
-"use client";
-
 import EventForm from "@/components/shared/EventForm";
 import { useRouter } from "next/navigation";
 
 const UpdateEvent = async ({ params: { id }, currentUser }) => {
     // const { sessionClaims } = auth();
-    const router = useRouter();
-    if (!currentUser) {
-        router.push("/signin");
-    }
+
     const userId = "5f5b689c8f3dbc1de053d5u1";
     const event = JSON.parse(JSON.stringify(getEventById));
 

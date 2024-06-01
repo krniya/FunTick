@@ -3,22 +3,25 @@
 import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
 import axios from "axios";
+import { SessionProvider, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function RootLayout({ children }) {
-    const [currentUser, setcurrentUser] = useState(null);
-    useEffect(() => {
-        (async () => {
-            const { currentUser } = await getCurrentUser();
-            setcurrentUser(currentUser);
-        })();
-    }, []);
+    // const [currentUser, setcurrentUser] = useState(null);
+    // useEffect(() => {
+    //     (async () => {
+    //         const { currentUser } = await getCurrentUser();
+    //         setcurrentUser(currentUser);
+    //     })();
+    // }, []);
     return (
-        <div className='flex h-screen flex-col'>
-            <Header currentUser={currentUser} />
-            <main className='flex-1'>{children}</main>
-            <Footer />
-        </div>
+        <SessionProvider session={pageProp.session}>
+            <div className='flex h-screen flex-col'>
+                <Header currentUser={currentUser} />
+                <main className='flex-1'>{children}</main>
+                <Footer />
+            </div>
+        </SessionProvider>
     );
 }
 

@@ -138,3 +138,5 @@ client-ts
 # infra/k8s/client-depl.yaml
 infra/k8s/client-new-depl.yaml.old
 nats-test
+
+client-vite

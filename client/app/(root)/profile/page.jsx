@@ -1,5 +1,3 @@
-"use client";
-
 import Collection from "@/components/shared/Collection";
 import { Button } from "@/components/ui/button";
 import { getEventByUser, getOrderByUser } from "@/data/data";
@@ -10,10 +8,6 @@ import React from "react";
 const ProfilePage = async ({ searchParams, currentUser }) => {
     // const { sessionClaims } = auth();
     const userId = "5f5b689c8f3dbc1de053d5u1";
-    const router = useRouter();
-    if (!currentUser) {
-        router.push("/signin");
-    }
 
     const ordersPage = Number(searchParams?.ordersPage) || 1;
     const eventsPage = Number(searchParams?.eventsPage) || 1;

@@ -4,6 +4,7 @@ import Search from "@/components/shared/Search";
 import { Button } from "@/components/ui/button";
 import { getAllEvents } from "@/data/data";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,6 +13,9 @@ export default function Home({ searchParams }) {
         data: JSON.parse(JSON.stringify(getAllEvents)),
         totalPages: 1,
     };
+
+    const session = useSession();
+    console.log("🚀 ~ RootLayout ~ session:", session);
     // const fetchdata = async () => {
     //     const { data } = await axios.get(
     //         "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser"
@@ -28,11 +32,11 @@ export default function Home({ searchParams }) {
                 <div className='wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0'>
                     <div className='flex flex-col justify-center gap-8'>
                         <h1 className='h1-bold'>
-                            Host, Connect, Celebrate: Your Events, Our Platform!
+                            Connect, Share and Celebrate: Your Fun, Our Platform!
                         </h1>
                         <p className='p-regular-20 md:p-regular-24'>
-                            Book and learn helpful tips from 3,168+ mentors in world-class companies
-                            with our global community.
+                            Your ticket to hassle-free event experiences – buy or sell with ease on
+                            our platform!.
                         </p>
                         <Button size='lg' asChild className='button w-full sm:w-fit'>
                             <Link href='#events'>Explore Now</Link>

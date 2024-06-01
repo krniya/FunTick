@@ -1,5 +1,3 @@
-"use client";
-
 import Search from "@/components/shared/Search";
 import { getOrderByEvent } from "@/data/data";
 import { formatDateTime, formatPrice } from "@/lib/utils";
@@ -8,10 +6,7 @@ import { useRouter } from "next/navigation";
 const Orders = async ({ searchParams, currentUser }) => {
     const eventId = searchParams?.eventId || "";
     const searchText = searchParams?.query || "";
-    const router = useRouter();
-    if (!currentUser) {
-        router.push("/signin");
-    }
+
     const orders = JSON.parse(JSON.stringify(getOrderByEvent));
 
     return (

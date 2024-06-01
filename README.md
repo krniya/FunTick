@@ -15,23 +15,21 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="" alt="Logo" width="80" height="80">
+  <a href="https://github.com/krniya/FunTick">
+    <img src="https://github.com/krniya/FunTick/blob/main/client/public/assets/images/logo.png?raw=true" alt="Logo" width="80" height="120">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Funtick</h3>
 
   <p align="center">
-    project_description
+    Funtick is a E-commerce site for general public to buy or sell tickets for any movies or consert
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/krniya/FunTick"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://github.com/krniya/FunTick/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/krniya/FunTick/issues">Request Feature</a>
   </p>
 </div>
 
@@ -41,12 +39,12 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
+    <!-- <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
-    </li>
+    </li> -->
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
@@ -55,31 +53,30 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <!-- <li><a href="#roadmap">Roadmap</a></li> -->
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <!-- <li><a href="#acknowledgments">Acknowledgments</a></li> -->
   </ol>
 </details>
 
 
 
-<!-- ABOUT THE PROJECT -->
+<!-- ABOUT THE PROJECT
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
+
+<!-- 
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
+* [![nodejs][nodejs]][React-url]
 * [![Vue][Vue.js]][Vue-url]
 * [![Angular][Angular.io]][Angular-url]
 * [![Svelte][Svelte.dev]][Svelte-url]
@@ -88,65 +85,77 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 * [![JQuery][JQuery.com]][JQuery-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+ -->
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This project demonstrates a ticket buying and selling service for general public implemented in microservices architecture using Node.js, Docker, Kubernetes, and NATS Streaming Services for event handling. We use Skaffold to manage the development workflow and Kubernetes Secrets for environment variables and an ingress is used to manage access to the services.
+
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Before you begin, ensure you have met the following requirements:
+
 * npm
   ```sh
   npm install npm@latest -g
   ```
+- Node.js (>= 18.x)
+- Docker
+- Kubernetes (Minikube or any Kubernetes cluster)
+- kubectl
+- Skaffold
+- Helm (for managing Kubernetes applications)
+- NATS Streaming Server
+
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+
+1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/krniya/FunTick.git
    ```
-3. Install NPM packages
+2. Install NPM packages (if you wants to create your own docker images)
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+  or use the .yaml available in /infra/k8s folder.
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Skaffold Setup
+Ensure Skaffold is installed and configured properly. You can check the Skaffold installation guide <a href="https://skaffold.dev/docs/install/">here.</a>
 
+### Deploying the Microservices
+Use Skaffold to build and deploy your services. Skaffold will use the configurations defined in skaffold.yaml.
+
+```sh
+skaffold dev
+```
+This command will:
+
+1. Build Docker images for each microservice.
+2. Apply Kubernetes manifests to deploy the services.
+3. Stream logs from your running services.
+
+
+To deploy without the continuous development mode:
+```sh
+skaffold run
+```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+ Once all services are deployed and running, you can start interacting with your microservices. You can access your services through the ingress controller.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -180,39 +189,39 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Nitish Yadav - [@krniya_](https://twitter.com/krniya_) - krnitish@live.in
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/krniya/FunTick](https://github.com/krniya/FunTick)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- ACKNOWLEDGMENTS -->
+<!-- ACKNOWLEDGMENTS
 ## Acknowledgments
 
 * []()
 * []()
-* []()
+* []() -->
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<!-- <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/krniya/FunTick.svg?style=for-the-badge
+[contributors-url]: https://github.com/krniya/FunTick/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/krniya/FunTick.svg?style=for-the-badge
+[forks-url]: https://github.com/krniya/FunTick/network/members
+[stars-shield]: https://img.shields.io/github/stars/krniya/FunTick.svg?style=for-the-badge
+[stars-url]: https://github.com/krniya/FunTick/stargazers
+[issues-shield]: https://img.shields.io/github/issues/krniya/FunTick.svg?style=for-the-badge
+[issues-url]: https://github.com/krniya/FunTick/issues
+[license-shield]: https://img.shields.io/github/license/krniya/FunTick.svg?style=for-the-badge
+[license-url]: https://github.com/krniya/FunTick/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
+[linkedin-url]: https://linkedin.com/in/krniya
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
@@ -230,3 +239,4 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
+[nodejs]: https://img.shields.io/badge/niyanode?style=for-the-badge&logo=nodedotjs

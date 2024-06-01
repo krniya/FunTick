@@ -1,5 +1,3 @@
-"use client";
-
 import CheckoutButton from "@/components/shared/CheckoutButton";
 import Collection from "@/components/shared/Collection";
 import { getEventById, getRelevantEvent } from "@/data/data";
@@ -14,10 +12,6 @@ const EventDetails = async ({ params: { id }, searchParams }) => {
         data: JSON.parse(JSON.stringify(getRelevantEvent)),
         totalPages: 1,
     };
-    const router = useRouter();
-    if (!currentUser) {
-        router.push("/signin");
-    }
 
     return (
         <>

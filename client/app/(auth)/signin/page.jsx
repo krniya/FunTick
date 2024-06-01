@@ -27,6 +27,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 export default function CreateAccount() {
     const router = useRouter();
@@ -38,7 +40,7 @@ export default function CreateAccount() {
             .regex(/[a-zA-Z]/, { message: "Password must contain at least one letter" })
             .regex(/\d/, { message: "Password must contain at least one digit" }),
     });
-
+    const [loginInProgress, setLoginInProgress] = useState(false);
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl");
 
@@ -59,21 +61,24 @@ export default function CreateAccount() {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         // console.log(values);
+
         const payload = {
             email: values.email,
             password: values.password,
+            callbackUrl: "http://funtick.buy",
         };
-
-        try {
-            const response = await axios.post("/api/users/signin", payload);
-            console.log("🚀 ~ onSubmit ~ response:", response);
-            if (response.status === 200) {
-                form.reset();
-                router.push(`/`);
-            }
-        } catch (e) {
-            console.log(e);
-        }
+        setLoginInProgress(true);
+        await signIn("credentials", payload);
+        setLoginInProgress(false);
+        // try {
+        //     const response = await axios.post("/api/users/signin", payload);
+        //     if (response.status === 200) {
+        //         form.reset();
+        //         router.push(`/`);
+        //     }
+        // } catch (e) {
+        //     console.log(e);
+        // }
     }
     return (
         <div className='grid gap-4'>
@@ -122,6 +127,8 @@ export default function CreateAccount() {
                             <FormField
                                 control={form.control}
                                 name='email'
+                                type='email'
+                                disabled={loginInProgress}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
@@ -135,6 +142,8 @@ export default function CreateAccount() {
                             <FormField
                                 control={form.control}
                                 name='password'
+                                type='password'
+                                disabled={loginInProgress}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
@@ -149,7 +158,7 @@ export default function CreateAccount() {
                                     </FormItem>
                                 )}
                             />
-                            <Button className='w-full' type='submit'>
+                            <Button className='w-full' type='submit' disabled={loginInProgress}>
                                 Submit
                             </Button>
                         </form>
